@@ -1,4 +1,4 @@
-# 🤖 Enhanced Chat Agent Starter Kit
+# 🤖 Enhanced AI Chat Agent
 
 ![agents-header](https://github.com/user-attachments/assets/f6d99eeb-1803-4495-9c5e-3cf07a37b402)
 
@@ -6,21 +6,17 @@
 
 [![Deploy to Cloudflare](https://deploy.workers.cloudflare.com/button)](https://deploy.workers.cloudflare.com/?url=https://github.com/iamask/agents)
 
-> **Fork of [Cloudflare Agents Starter](https://github.com/cloudflare/agents-starter)** with enhanced tool capabilities and improved UI/UX
+A powerful AI-powered chat agent built on Cloudflare's Agent platform, powered by [`agents`](https://www.npmjs.com/package/agents). This project provides a comprehensive foundation for creating interactive chat experiences with AI, complete with a modern UI and extensive tool integration capabilities.
 
-A starter template for building AI-powered chat agents using Cloudflare's Agent platform, powered by [`agents`](https://www.npmjs.com/package/agents). This project provides a foundation for creating interactive chat experiences with AI, complete with a modern UI and extensive tool integration capabilities.
-
-## 🆕 What's New in This Fork
-
-This fork extends the original [Cloudflare Agents Starter](https://github.com/cloudflare/agents-starter) with:
+## 🚀 Features
 
 - **Enhanced UI/UX**: Auto-resizing textarea, stop generation button, improved tool visualization
-- **Additional Tools**: Weather, local time, country search, Pokémon API, Cloudflare Workers integration
+- **11+ Built-in Tools**: Weather, local time, country search, Pokémon API, Cloudflare Workers integration
 - **Markdown Rendering**: Proper markdown support with performance optimizations
 - **Better Tool Management**: Expandable tool invocation cards with better visual feedback
 - **OpenAI Key Validation**: Built-in API key validation and error handling
 
-## Features
+## Core Features
 
 - 💬 Interactive chat interface with AI
 - 🛠️ **Extended tool system** with human-in-the-loop confirmation
@@ -35,7 +31,7 @@ This fork extends the original [Cloudflare Agents Starter](https://github.com/cl
 
 ## Available Tools
 
-This fork includes the following tools:
+This project includes the following tools:
 
 ### 🌤️ Weather & Time
 
@@ -63,7 +59,7 @@ This fork includes the following tools:
 - **`callgraphqlWorker`** - Execute GraphQL queries and operations
 - **`addCloudflareCustomRule`** - Create custom security rules for Cloudflare
 
-### 📋 Task Management (Original)
+### 📋 Task Management
 
 - **`getScheduledTasks`** - List all scheduled tasks
 - **`cancelScheduledTask`** - Cancel a scheduled task by ID
@@ -223,7 +219,7 @@ Tools can be configured in two ways:
 
 ### Use a different AI model provider
 
-The starting [`server.ts`](https://github.com/cloudflare/agents-starter/blob/main/src/server.ts) implementation uses the [`ai-sdk`](https://sdk.vercel.ai/docs/introduction) and the [OpenAI provider](https://sdk.vercel.ai/providers/ai-sdk-providers/openai), but you can use any AI model provider by:
+The starting implementation uses the [`ai-sdk`](https://sdk.vercel.ai/docs/introduction) and the [OpenAI provider](https://sdk.vercel.ai/providers/ai-sdk-providers/openai), but you can use any AI model provider by:
 
 1. Installing an alternative AI provider for the `ai-sdk`, such as the [`workers-ai-provider`](https://sdk.vercel.ai/providers/community-providers/cloudflare-workers-ai) or [`anthropic`](https://sdk.vercel.ai/providers/ai-sdk-providers/anthropic) provider:
 2. Replacing the AI SDK with the [OpenAI SDK](https://github.com/openai/openai-node)
@@ -262,7 +258,7 @@ Replace the `@ai-sdk/openai` import and usage with the `workers-ai-provider`:
 + const model = workersai("@cf/deepseek-ai/deepseek-r1-distill-qwen-32b")
 ```
 
-Commit your changes and then run the `agents-starter` as per the rest of this README.
+Commit your changes and then run the project as per the rest of this README.
 
 ### Modifying the UI
 
@@ -324,12 +320,7 @@ Each use case can be implemented by:
 - [`agents`](https://github.com/cloudflare/agents/blob/main/packages/agents/README.md)
 - [Cloudflare Agents Documentation](https://developers.cloudflare.com/agents/)
 - [Cloudflare Workers Documentation](https://developers.cloudflare.com/workers/)
-- [Original Cloudflare Agents Starter](https://github.com/cloudflare/agents-starter)
 
 ## License
 
 MIT
-
-## Acknowledgments
-
-This project is a fork of the excellent [Cloudflare Agents Starter](https://github.com/cloudflare/agents-starter) project. Special thanks to the Cloudflare team and contributors for the original work.
