@@ -1,7 +1,5 @@
 # 🤖 Enhanced AI Chat Agent
 
-![agents-header](https://github.com/user-attachments/assets/f6d99eeb-1803-4495-9c5e-3cf07a37b402)
-
 ### Method 1: One-Click Deployment
 
 [![Deploy to Cloudflare](https://deploy.workers.cloudflare.com/button)](https://deploy.workers.cloudflare.com/?url=https://github.com/iamask/agents)
@@ -269,44 +267,54 @@ The chat interface is built with React and can be customized in `app.tsx`:
 - Customize message rendering and tool confirmation dialogs
 - Add new controls to the header
 
-### Example Use Cases
+## Example Use Cases
 
-1. **Customer Support Agent**
-   - Add tools for:
-     - Ticket creation/lookup
-     - Order status checking
-     - Product recommendations
-     - FAQ database search
+### 1. Customer Support Agent
 
-2. **Development Assistant**
-   - Integrate tools for:
-     - Code linting
-     - Git operations
-     - Documentation search
-     - Dependency checking
+Add tools for:
 
-3. **Data Analysis Assistant**
-   - Build tools for:
-     - Database querying
-     - Data visualization
-     - Statistical analysis
-     - Report generation
+- Ticket creation/lookup
+- Order status checking
+- Product recommendations
+- FAQ database search
 
-4. **Personal Productivity Assistant**
-   - Implement tools for:
-     - Task scheduling with flexible timing options
-     - One-time, delayed, and recurring task management
-     - Task tracking with reminders
-     - Email drafting
-     - Note taking
+### 2. Development Assistant
 
-5. **Scheduling Assistant**
-   - Build tools for:
-     - One-time event scheduling using specific dates
-     - Delayed task execution (e.g., "remind me in 30 minutes")
-     - Recurring tasks using cron patterns
-     - Task payload management
-     - Flexible scheduling patterns
+Integrate tools for:
+
+- Code linting
+- Git operations
+- Documentation search
+- Dependency checking
+
+### 3. Data Analysis Assistant
+
+Build tools for:
+
+- Database querying
+- Data visualization
+- Statistical analysis
+- Report generation
+
+### 4. Personal Productivity Assistant
+
+Implement tools for:
+
+- Task scheduling with flexible timing options
+- One-time, delayed, and recurring task management
+- Task tracking with reminders
+- Email drafting
+- Note taking
+
+### 5. Scheduling Assistant
+
+Build tools for:
+
+- One-time event scheduling using specific dates
+- Delayed task execution (e.g., "remind me in 30 minutes")
+- Recurring tasks using cron patterns
+- Task payload management
+- Flexible scheduling patterns
 
 Each use case can be implemented by:
 
