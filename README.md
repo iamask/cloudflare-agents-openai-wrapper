@@ -6,14 +6,6 @@
 
 A powerful AI-powered chat agent built on Cloudflare's Agent platform, powered by [`agents`](https://www.npmjs.com/package/agents). This project provides a comprehensive foundation for creating interactive chat experiences with AI, complete with a modern UI and extensive tool integration capabilities.
 
-## 🚀 Features
-
-- **Enhanced UI/UX**: Auto-resizing textarea, stop generation button, improved tool visualization
-- **11+ Built-in Tools**: Weather, local time, country search, Pokémon API, Cloudflare Workers integration
-- **Markdown Rendering**: Proper markdown support with performance optimizations
-- **Better Tool Management**: Expandable tool invocation cards with better visual feedback
-- **OpenAI Key Validation**: Built-in API key validation and error handling
-
 ## Core Features
 
 - 💬 Interactive chat interface with AI
@@ -214,49 +206,6 @@ Tools can be configured in two ways:
 
 1. With an `execute` function for automatic execution
 2. Without an `execute` function, requiring confirmation and using the `executions` object to handle the confirmed action
-
-### Use a different AI model provider
-
-The starting implementation uses the [`ai-sdk`](https://sdk.vercel.ai/docs/introduction) and the [OpenAI provider](https://sdk.vercel.ai/providers/ai-sdk-providers/openai), but you can use any AI model provider by:
-
-1. Installing an alternative AI provider for the `ai-sdk`, such as the [`workers-ai-provider`](https://sdk.vercel.ai/providers/community-providers/cloudflare-workers-ai) or [`anthropic`](https://sdk.vercel.ai/providers/ai-sdk-providers/anthropic) provider:
-2. Replacing the AI SDK with the [OpenAI SDK](https://github.com/openai/openai-node)
-3. Using the Cloudflare [Workers AI + AI Gateway](https://developers.cloudflare.com/ai-gateway/providers/workersai/#workers-binding) binding API directly
-
-For example, to use the [`workers-ai-provider`](https://sdk.vercel.ai/providers/community-providers/cloudflare-workers-ai), install the package:
-
-```sh
-npm install workers-ai-provider
-```
-
-Add an `ai` binding to `wrangler.jsonc`:
-
-```jsonc
-// rest of file
-  "ai": {
-    "binding": "AI"
-  }
-// rest of file
-```
-
-Replace the `@ai-sdk/openai` import and usage with the `workers-ai-provider`:
-
-```diff
-// server.ts
-// Change the imports
-- import { openai } from "@ai-sdk/openai";
-+ import { createWorkersAI } from 'workers-ai-provider';
-
-// Create a Workers AI instance
-+ const workersai = createWorkersAI({ binding: env.AI });
-
-// Use it when calling the streamText method (or other methods)
-// from the ai-sdk
-- const model = openai("gpt-4o-2024-11-20");
-+ const model = workersai("@cf/deepseek-ai/deepseek-r1-distill-qwen-32b")
-```
-
-Commit your changes and then run the project as per the rest of this README.
 
 ### Modifying the UI
 
