@@ -3,7 +3,6 @@ import { useAgent } from "agents/react";
 import { useAgentChat } from "agents/ai-react";
 import type { Message } from "@ai-sdk/react";
 import { APPROVAL } from "./shared";
-import { tools } from "./tools";
 
 // Component imports
 import { Button } from "@/components/button/Button";
@@ -28,33 +27,9 @@ import {
 } from "@phosphor-icons/react";
 
 // List of tools that require human confirmation
-const toolsRequiringConfirmation: (keyof typeof tools)[] = [
+const toolsRequiringConfirmation: string[] = [
   // getWeatherInformation removed - now executes automatically
 ];
-
-// Function to generate dynamic tool descriptions
-const generateToolDescriptions = () => {
-  const toolDescriptions: Record<string, string> = {
-    getWeatherInformation: "Weather information for any city",
-    getLocalTime: "Local time in different locations",
-    scheduleTask: "Schedule tasks for later execution",
-    sendWebhook: "Send webhook messages",
-    searchDocs: "Search through Cloudflare documentation",
-    generateImage: "Generate images from text descriptions",
-    searchCountry: "Search country information and details",
-    searchPokemon: "Get Pokémon details by name or ID",
-    callDoWorker: "Call other Cloudflare Workers",
-    callgraphqlWorker: "Execute GraphQL queries and operations",
-    addCloudflareCustomRule: "Create Cloudflare custom security rules",
-    getScheduledTasks: "List all scheduled tasks",
-    cancelScheduledTask: "Cancel scheduled tasks",
-  };
-
-  return Object.keys(tools).map(toolName => ({
-    name: toolName,
-    description: toolDescriptions[toolName] || `${toolName} functionality`
-  }));
-};
 
 function HasOpenAIKey() {
   // Placeholder: implement OpenAI key check if needed
@@ -127,18 +102,13 @@ export default function Chat() {
       (part) =>
         part.type === "tool-invocation" &&
         part.toolInvocation.state === "call" &&
-        toolsRequiringConfirmation.includes(
-          part.toolInvocation.toolName as keyof typeof tools
-        )
+        toolsRequiringConfirmation.includes(part.toolInvocation.toolName)
     )
   );
 
   const formatTime = (date: Date) => {
     return date.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
   };
-
-  // Generate dynamic tool list
-  const availableTools = generateToolDescriptions();
 
   return (
     <div className="h-[100vh] w-full p-4 flex justify-center items-center bg-fixed overflow-hidden">
@@ -212,12 +182,50 @@ export default function Chat() {
                     about:
                   </p>
                   <ul className="text-sm text-left space-y-2">
-                    {availableTools.map((tool) => (
-                      <li key={tool.name} className="flex items-center gap-2">
-                        <span className="text-[#F48120]">•</span>
-                        <span>{tool.description}</span>
-                      </li>
-                    ))}
+                    <li className="flex items-center gap-2">
+                      <span className="text-[#F48120]">•</span>
+                      <span>Weather information for any city</span>
+                    </li>
+                    <li className="flex items-center gap-2">
+                      <span className="text-[#F48120]">•</span>
+                      <span>Local time in different locations</span>
+                    </li>
+                    <li className="flex items-center gap-2">
+                      <span className="text-[#F48120]">•</span>
+                      <span>Scheduling tasks for later execution</span>
+                    </li>
+                    <li className="flex items-center gap-2">
+                      <span className="text-[#F48120]">•</span>
+                      <span>Sending webhook messages</span>
+                    </li>
+                    <li className="flex items-center gap-2">
+                      <span className="text-[#F48120]">•</span>
+                      <span>Searching through Cloudflare documentation</span>
+                    </li>
+                    <li className="flex items-center gap-2">
+                      <span className="text-[#F48120]">•</span>
+                      <span>Generating images from text descriptions</span>
+                    </li>
+                    <li className="flex items-center gap-2">
+                      <span className="text-[#F48120]">•</span>
+                      <span>Searching country information and details</span>
+                    </li>
+                    <li className="flex items-center gap-2">
+                      <span className="text-[#F48120]">•</span>
+                      <span>Getting Pokémon details by name or ID</span>
+                    </li>
+                    <li className="flex items-center gap-2">
+                      <span className="text-[#F48120]">•</span>
+                      <span>Calling other Cloudflare Workers</span>
+                    </li>
+                    <li className="flex items-center gap-2">
+                      <span className="text-[#F48120]">•</span>
+                      <span>Executing GraphQL queries and operations</span>
+                    </li>
+                    <li className="flex items-center gap-2">
+                      <span className="text-[#F48120]">•</span>
+                      <span>Creating Cloudflare custom security rules</span>
+                    </li>
                   </ul>
                 </div>
               </Card>
@@ -281,24 +289,13 @@ export default function Chat() {
                                       🕒
                                     </span>
                                   )}
-                                  <p className="text-sm whitespace-pre-wrap">
-                                    {imageMatch ? part.text.split("Image data:")[0] : part.text.split(/(https?:\/\/[^\s)]+)/).map((part, i) => {
-                                      if (part.match(/^https?:\/\//)) {
-                                        return (
-                                          <a
-                                            key={i}
-                                            href={part}
-                                            target="_blank"
-                                            rel="noopener noreferrer"
-                                            className="text-blue-500 hover:underline"
-                                          >
-                                            {part}
-                                          </a>
-                                        );
-                                      }
-                                      return part;
-                                    })}
-                                  </p>
+                                  <div className="text-sm">
+                                    {imageMatch ? (
+                                      <MemoizedMarkdown content={part.text.split("Image data:")[0]} id={`${m.id}-text`} />
+                                    ) : (
+                                      <MemoizedMarkdown content={part.text} id={`${m.id}-text`} />
+                                    )}
+                                  </div>
                                   {imageMatch && (
                                     <div className="mt-3">
                                       <img
@@ -330,76 +327,19 @@ export default function Chat() {
                           if (part.type === "tool-invocation") {
                             const toolInvocation = part.toolInvocation;
                             const toolCallId = toolInvocation.toolCallId;
+                            const needsConfirmation = toolsRequiringConfirmation.includes(
+                              toolInvocation.toolName
+                            );
 
-                            if (
-                              toolsRequiringConfirmation.includes(
-                                toolInvocation.toolName as keyof typeof tools
-                              ) &&
-                              toolInvocation.state === "call"
-                            ) {
-                              return (
-                                <Card
-                                  // biome-ignore lint/suspicious/noArrayIndexKey: it's fine here
-                                  key={i}
-                                  className="p-4 my-3 rounded-md bg-neutral-100 dark:bg-neutral-900"
-                                >
-                                  <div className="flex items-center gap-2 mb-3">
-                                    <div className="bg-[#F48120]/10 p-1.5 rounded-full">
-                                      <Robot
-                                        size={16}
-                                        className="text-[#F48120]"
-                                      />
-                                    </div>
-                                    <h4 className="font-medium">
-                                      {toolInvocation.toolName}
-                                    </h4>
-                                  </div>
-
-                                  <div className="mb-3">
-                                    <h5 className="text-xs font-medium mb-1 text-muted-foreground">
-                                      Arguments:
-                                    </h5>
-                                    <pre className="bg-background/80 p-2 rounded-md text-xs overflow-auto">
-                                      {JSON.stringify(
-                                        toolInvocation.args,
-                                        null,
-                                        2
-                                      )}
-                                    </pre>
-                                  </div>
-
-                                  <div className="flex gap-2 justify-end">
-                                    <Button
-                                      variant="primary"
-                                      size="sm"
-                                      onClick={() =>
-                                        addToolResult({
-                                          toolCallId,
-                                          result: APPROVAL.NO,
-                                        })
-                                      }
-                                    >
-                                      Reject
-                                    </Button>
-                                    <Tooltip content={"Accept action"}>
-                                      <Button
-                                        variant="primary"
-                                        size="sm"
-                                        onClick={() =>
-                                          addToolResult({
-                                            toolCallId,
-                                            result: APPROVAL.YES,
-                                          })
-                                        }
-                                      >
-                                        Approve
-                                      </Button>
-                                    </Tooltip>
-                                  </div>
-                                </Card>
-                              );
-                            }
-                            return null;
+                            return (
+                              <ToolInvocationCard
+                                key={i}
+                                toolInvocation={toolInvocation}
+                                toolCallId={toolCallId}
+                                needsConfirmation={needsConfirmation}
+                                addToolResult={addToolResult}
+                              />
+                            );
                           }
                           return null;
                         })}
