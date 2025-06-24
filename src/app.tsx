@@ -3,7 +3,7 @@ import { useAgent } from "agents/react";
 import { useAgentChat } from "agents/ai-react";
 import type { Message } from "@ai-sdk/react";
 import { APPROVAL } from "./shared";
-import type { tools } from "./tools";
+import { tools } from "./tools";
 
 // Component imports
 import { Button } from "@/components/button/Button";
@@ -31,6 +31,30 @@ import {
 const toolsRequiringConfirmation: (keyof typeof tools)[] = [
   // getWeatherInformation removed - now executes automatically
 ];
+
+// Function to generate dynamic tool descriptions
+const generateToolDescriptions = () => {
+  const toolDescriptions: Record<string, string> = {
+    getWeatherInformation: "Weather information for any city",
+    getLocalTime: "Local time in different locations",
+    scheduleTask: "Schedule tasks for later execution",
+    sendWebhook: "Send webhook messages",
+    searchDocs: "Search through Cloudflare documentation",
+    generateImage: "Generate images from text descriptions",
+    searchCountry: "Search country information and details",
+    searchPokemon: "Get Pokémon details by name or ID",
+    callDoWorker: "Call other Cloudflare Workers",
+    callgraphqlWorker: "Execute GraphQL queries and operations",
+    addCloudflareCustomRule: "Create Cloudflare custom security rules",
+    getScheduledTasks: "List all scheduled tasks",
+    cancelScheduledTask: "Cancel scheduled tasks",
+  };
+
+  return Object.keys(tools).map(toolName => ({
+    name: toolName,
+    description: toolDescriptions[toolName] || `${toolName} functionality`
+  }));
+};
 
 function HasOpenAIKey() {
   // Placeholder: implement OpenAI key check if needed
@@ -113,6 +137,9 @@ export default function Chat() {
     return date.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
   };
 
+  // Generate dynamic tool list
+  const availableTools = generateToolDescriptions();
+
   return (
     <div className="h-[100vh] w-full p-4 flex justify-center items-center bg-fixed overflow-hidden">
       <HasOpenAIKey />
@@ -185,50 +212,12 @@ export default function Chat() {
                     about:
                   </p>
                   <ul className="text-sm text-left space-y-2">
-                    <li className="flex items-center gap-2">
-                      <span className="text-[#F48120]">•</span>
-                      <span>Weather information for any city</span>
-                    </li>
-                    <li className="flex items-center gap-2">
-                      <span className="text-[#F48120]">•</span>
-                      <span>Local time in different locations</span>
-                    </li>
-                    <li className="flex items-center gap-2">
-                      <span className="text-[#F48120]">•</span>
-                      <span>Schedule tasks for later execution</span>
-                    </li>
-                    <li className="flex items-center gap-2">
-                      <span className="text-[#F48120]">•</span>
-                      <span>Send webhook messages</span>
-                    </li>
-                    <li className="flex items-center gap-2">
-                      <span className="text-[#F48120]">•</span>
-                      <span>Search through Cloudflare documentation</span>
-                    </li>
-                    <li className="flex items-center gap-2">
-                      <span className="text-[#F48120]">•</span>
-                      <span>Generate images from text descriptions</span>
-                    </li>
-                    <li className="flex items-center gap-2">
-                      <span className="text-[#F48120]">•</span>
-                      <span>Search country information and details</span>
-                    </li>
-                    <li className="flex items-center gap-2">
-                      <span className="text-[#F48120]">•</span>
-                      <span>Get Pokémon details by name or ID</span>
-                    </li>
-                    <li className="flex items-center gap-2">
-                      <span className="text-[#F48120]">•</span>
-                      <span>Call other Cloudflare Workers</span>
-                    </li>
-                    <li className="flex items-center gap-2">
-                      <span className="text-[#F48120]">•</span>
-                      <span>Execute GraphQL queries and operations</span>
-                    </li>
-                    <li className="flex items-center gap-2">
-                      <span className="text-[#F48120]">•</span>
-                      <span>Create Cloudflare custom security rules</span>
-                    </li>
+                    {availableTools.map((tool) => (
+                      <li key={tool.name} className="flex items-center gap-2">
+                        <span className="text-[#F48120]">•</span>
+                        <span>{tool.description}</span>
+                      </li>
+                    ))}
                   </ul>
                 </div>
               </Card>
