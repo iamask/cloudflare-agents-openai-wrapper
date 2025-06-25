@@ -2,7 +2,7 @@
 
 ### Method 1: One-Click Deployment
 
-[![Deploy to Cloudflare](https://deploy.workers.cloudflare.com/button)](https://deploy.workers.cloudflare.com/?url=https://github.com/iamask/agents)
+[![Deploy to Cloudflare](https://deploy.workers.cloudflare.com/button)](https://deploy.workers.cloudflare.com/?url=https://github.com/iamask/cloudflare-agent)
 
 A powerful AI-powered chat agent built on Cloudflare's Agent platform, powered by [`agents`](https://www.npmjs.com/package/agents). This project provides a comprehensive foundation for creating interactive chat experiences with AI, complete with a modern UI and extensive tool integration capabilities.
 
@@ -65,8 +65,8 @@ This project includes the following tools:
 1. Clone this repository:
 
 ```bash
-git clone https://github.com/iamask/agents.git
-cd agents
+git clone https://github.com/iamask/cloudflare-agent.git
+cd cloudflare-agent
 ```
 
 2. Install dependencies:
